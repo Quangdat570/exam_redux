@@ -1,53 +1,57 @@
-import React from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { fetchCount } from './counterAPI';
 
-import { createSlice } from "@reduxjs/toolkit";
+const initialState = {
+  value: 0,
+  status: 'idle',
+};
 
-const initialState = [];
-const counterSlice = createSlice({
-    name:"counter",
-    initialState,
-    reducers: {
-        inQty: (state, action) => {
-            const itemIndex = state.findIndex(
-                (item) => item.id === action.payload
-            );
 
-            if (itemIndex !== -1) {
-                const newState = [...state];
-
-                const newItem = {
-                    ...newState[itemIndex],
-                    quantity: newState[itemIndex].quantity + 1,
-                };
-
-                newState[itemIndex] = newItem;
-
-                return newState;
-            }
-        },
-
-        decQty: (state, action) => {
-            const index = state.findIndex(
-                (item) => item.id === action.payload
-            );
-
-            if (index !== -1 && state[index].quantity > 1) {
-                const newState = [...state];
-
-                const newItem = { ...newState[index] };
-                newItem.quantity -= 1;
-
-                newState[index] = newItem;
-
-                return newState;
-            }
-        },
+export const incrementAsync = createAsyncThunk(
+    'counter/fetchCount',
+    async (amount) => {
+      const response = await fetchCount(amount);
+      
+      return response.data;
     }
-})
+  );
 
-export const counterReducer = counterSlice.reducer;
-export const {  incQty, decQty } = counterSlice.actions;
+  export const counterSlice = createSlice({
+    name: 'counter',
+    initialState,
+    
+    reducers: {
+      increment: (state) => {
+      
+        state.value += 1;
+      },
+      decrement: (state) => {
+        state.value -= 1;
+      },
+      
+      incrementByAmount: (state, action) => {
+        state.value += action.payload;
+      },
+    },
+    
+    extraReducers: (builder) => {
+      builder
+        .addCase(incrementAsync.pending, (state) => {
+          state.status = 'loading';
+        })
+        .addCase(incrementAsync.fulfilled, (state, action) => {
+          state.status = 'idle';
+          state.value += action.payload;
+        });
+    },
+  });
+  
+  export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+  
 
-export const selectCounter = (state) => state.todos;
+  export const selectCount = (state) => state.counter.value;
+  
+ 
+ 
+  
+  export const counterReducer =  counterSlice.reducer;
