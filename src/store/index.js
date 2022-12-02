@@ -1,14 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { todoReducer } from "./feautes/comments.slice";
+import { gameReducer } from "./feautes/comments.slice";
 import { counterReducer } from "./feautes/counter/Counter.slice";
+import { infoReducer } from "../page/GameInfo/Gameinfo.slice";
+import { gameDetailReducer } from "../page/GameInfo/Gameinfo.slice";
+import { categoriesDetailReducer } from "./feautes/categories/categories.slice";
+
 
 
 const store = configureStore({
     reducer: {
        
-        todos: todoReducer,
+        games: gameReducer,
         counter: counterReducer,
+        infos: infoReducer,
+        game: gameDetailReducer,
+        category: categoriesDetailReducer,
+       
         
     },
 });

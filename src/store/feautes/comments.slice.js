@@ -7,33 +7,42 @@ const initialState = {
     filter: "all",
 };
 
-export const loadTodos = createAsyncThunk("todos/load", async () => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/comments");
+export const loadGames = createAsyncThunk("todos/load", async () => {
+    const res = await fetch(
+        "https://free-to-play-games-database.p.rapidapi.com/api/games",
+        {
+            headers: {
+                'X-RapidAPI-Key': '595decacd1msha8c222da77f6b33p150d5ejsnea1ba80e02af',
+                'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
+            }
+        }
+        
+        );
     const data = await res.json();
 
     return data;
 });
 
-export const createTodo = createAsyncThunk("todos/create", async (todo) => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/comments", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todo),
-    });
+// export const createTodo = createAsyncThunk("todos/create", async (todo) => {
+//     const res = await fetch("https://jsonplaceholder.typicode.com/comments", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(todo),
+//     });
 
-    const data = await res.json();
+//     const data = await res.json();
 
-    return data;
-});
+//     return data;
+// });
 
-const todoSlice = createSlice({
+const gameSlice = createSlice({
     name: "todos",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(loadTodos.fulfilled, (state, action) => {
+        builder.addCase(loadGames.fulfilled, (state, action) => {
             return {
                 ...state,
                 data: action.payload,
@@ -42,14 +51,14 @@ const todoSlice = createSlice({
             };
         });
 
-        builder.addCase(createTodo.fulfilled, (state, action) => {
-            return {
-                ...state,
-                data: [...state.data, action.payload],
-            };
-        });
+        // builder.addCase(createTodo.fulfilled, (state, action) => {
+        //     return {
+        //         ...state,
+        //         data: [...state.data, action.payload],
+        //     };
+        // });
     },
 });
 
-export const todoReducer = todoSlice.reducer;
-export const selectTodos = (state) => state.todos;
+export const gameReducer = gameSlice.reducer;
+export const selectGames = (state) => state.games;

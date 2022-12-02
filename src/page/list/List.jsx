@@ -1,13 +1,44 @@
 import { useDispatch, useSelector } from "react-redux";
-
-import { createTodo,selectTodos } from "../../store/feautes/comments.slice";
+import { useRef } from "react";
 import { Cart } from "../commentCart/Cart";
+import { useState } from "react";
+
+
+
+import {selectGames } from "../../store/feautes/comments.slice";
+
+import { Category } from "../commentCart/Category";
+
+
+
+
+
 
 
 export const List = ( ) => {
     const dispatch = useDispatch();
-    const { data: todos } = useSelector(selectTodos);
+    const [filters, setFilters] = useState([])
+    
 
-    const list = todos.map((todo) => <Cart key={todo.id} todo={todo}/> )
-    return <div className="User-list d-flex flex-wrap mt-5">{list}</div>
+    const { data: games } = useSelector(selectGames);
+    const handleFiltersChange = (newFilters) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            ...newFilters,
+        })
+            
+        )
+    }
+    
+
+    const list = games.map((game) => <Cart key={game.id} game={game}/> )
+
+    // const cate = games.map((game) => <Cate key={game.id} game={game}/>)
+    return (
+        <div className="">
+           <Category filters={filters} onChange={handleFiltersChange}/>
+            <div className="User-list  d-flex flex-wrap mt-5">{list}</div>
+        </div>
+
+    )
 };

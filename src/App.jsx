@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 
-import {createTodo, loadTodos} from "./store/feautes/comments.slice"
+import { loadGames} from "./store/feautes/comments.slice"
 
 function App() {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ function App() {
 
     useEffect(() => {
         
-        dispatch(loadTodos());
+        dispatch(loadGames());
     }, []);
 
     return (

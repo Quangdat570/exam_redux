@@ -12,11 +12,12 @@ import store from "./store";
 import App from "./App";
 
 import Comnent from "./page/comment/Comment";
+import Info from "./page/GameInfo/GameInfo";
 
 const routes = createRoutesFromElements(
     <Route element={<App />}>
         <Route index element={<Comnent />} />
-        
+        <Route path="/games/:id" element={<Info/>}/>
         
         <Route path="*" element={<div>404 | Page Not Found</div>} />
     </Route>
